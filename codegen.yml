@@ -8,11 +8,12 @@ generates:
       - 'typescript-resolvers'
       - 'typescript-document-nodes'
     config:
+      useIndexSignature: true
       mapperTypeSuffix: Model
       mappers:
         User: ‘@prisma/client/index.d#User
         Project: ‘@prisma/client/index.d#Project
         Profile: ‘@prisma/client/index.d#Profile
-  ./schema.graphql:
+  ./graphql.schema.json:
     plugins:
       - 'introspection'

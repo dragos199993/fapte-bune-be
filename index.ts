@@ -4,7 +4,8 @@ import { ApolloServer } from 'apollo-server-express'
 import { PrismaClient } from '@prisma/client'
 import { context } from './graphql/context'
 import { typeDefs } from './graphql/schema'
-import { userResolvers } from './graphql/user/resolvers'
+import { userResolvers } from './graphql/user'
+import { projectResolvers } from './graphql/projects'
 
 dotenv.config()
 const app = express()
@@ -14,6 +15,7 @@ const port = process.env.PORT || 4000
 const resolvers = {
   Query: {
     ...userResolvers.Query,
+    ...projectResolvers.Query,
   },
   Mutation: {
     ...userResolvers.Mutation,
