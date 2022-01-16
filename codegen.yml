@@ -1,0 +1,18 @@
+overwrite: true
+schema: 'http://localhost:8088/graphql'
+documents: null
+generates:
+  graphql/generated/graphql.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-resolvers'
+      - 'typescript-document-nodes'
+    config:
+      mapperTypeSuffix: Model
+      mappers:
+        User: ‘@prisma/client/index.d#User
+        Project: ‘@prisma/client/index.d#Project
+        Profile: ‘@prisma/client/index.d#Profile
+  ./graphql.schema.json:
+    plugins:
+      - 'introspection'

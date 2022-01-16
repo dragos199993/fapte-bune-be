@@ -9,6 +9,17 @@ module.exports = {
     ecmaVersion: 13,
     sourceType: 'module',
   },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.ts'],
+        moduleDirectory: ['node_modules', './'],
+      },
+    },
+  },
   plugins: ['@typescript-eslint'],
-  rules: {},
+  rules: {
+    'import/prefer-default-export': 'off',
+    'import/extensions': 'off',
+  },
 }

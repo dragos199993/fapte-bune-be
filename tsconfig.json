@@ -3,10 +3,13 @@
     "target": "esnext",
     "module": "commonjs",
     "rootDir": "./",
-    "outDir": "./dist",
+    "outDir": "./build",
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
   "exclude": ["node_modules"]
 }

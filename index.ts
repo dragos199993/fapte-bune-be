@@ -1,40 +1,39 @@
+import dotenv from 'dotenv'
 import express from 'express'
-import { ApolloServer, gql } from 'apollo-server-express'
+import { ApolloServer } from 'apollo-server-express'
 import { PrismaClient } from '@prisma/client'
+import { context } from './graphql/context'
+import { typeDefs } from './graphql/schema'
+import { userResolvers } from './graphql/user/resolvers'
 
+dotenv.config()
 const app = express()
-const prisma = new PrismaClient()
-
-const typeDefs = gql`
-  type User {
-    id: ID!
-    name: String!
-    email: String!
-  }
-  type Query {
-    users: [User]
-  }
-
-  type Mutation {
-    createUser(name: String!, email: String!): User
-  }
-`
+export const prismaClient = new PrismaClient()
+const port = process.env.PORT || 4000
 
 const resolvers = {
   Query: {
-    users: () => prisma.user.findMany(),
+    ...userResolvers.Query,
   },
   Mutation: {
-    createUser: (_: any, { name, email }: { name: string; email: string }) =>
-      prisma.user.create({ data: { name, email } }),
+    ...userResolvers.Mutation,
   },
 }
 
-const server = new ApolloServer({ typeDefs, resolvers })
+const server = new ApolloServer({ typeDefs, resolvers, context })
 
-server.start().then(() => {
-  server.applyMiddleware({ app })
-  app.listen({ port: 4000 }, () =>
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-  )
-})
+const bootstrap = async () => {
+  try {
+    await server.start()
+    server.applyMiddleware({ app })
+    app.listen({ port }, () =>
+      console.log(
+        `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
+      )
+    )
+  } catch (_) {
+    console.log(`Failed to start server`)
+  }
+}
+
+bootstrap()
