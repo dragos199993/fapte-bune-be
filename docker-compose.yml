@@ -1,0 +1,26 @@
+postgres:
+  image: eeacms/postgres:9.6s
+  labels:
+    io.rancher.sidekicks: data
+  ports:
+    - "5432:5432"
+  volumes_from:
+    - data
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_DBNAME: fapte-bune
+    POSTGRES_DBUSER: admin
+    POSTGRES_DBPASS: admin
+data:
+  image: busybox
+  labels:
+    io.rancher.container.start_once: 'true'
+  tty: true
+  stdin_open: true
+  volumes:
+    - www-postgres-data:/var/lib/postgresql/data
+    - www-postgres-dump:/postgresql.backup
+  command: ["chown", "-v", "-R", "999:999", "/var/lib/postgresql/data"]
